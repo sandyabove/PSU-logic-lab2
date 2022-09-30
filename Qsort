@@ -1,0 +1,37 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <Windows.h>
+
+int compare(const void* x1, const void* x2) // функция сравнения элементов массива
+{
+	return (*(int*)x1 - *(int*)x2); // если результат вычитания равен 0, то числа равны, < 0: x1 < x2; > 0: x1 > x2
+}
+
+int main(void)
+{
+	SetConsoleOutputCP(1251);
+	int A[250000];
+	int* a = &A[0];
+	/*for (int i = 0; i < 250000; i++) {
+		A[i] = rand();
+		
+	}
+	*/
+	for (int i = 0, k = 0; i < 250000; i++, k = k + 1) {
+		A[i] += k;
+	}
+
+	for (int i = 125000, k = 249999; i < 250000; i++, k -= 1) {
+		A[i] += k;
+	}
+	clock_t start, end; // объявляем переменные для определения времени выполнения
+	start = clock();
+	qsort(a, 250000, sizeof(int), compare);
+	end = clock();
+	double time = 0.0;
+	time += (double)(end - start) / CLOCKS_PER_SEC;
+	printf("Размер массива: 250000\n");
+	printf("Время работы: %lf в секундах", time);
+	return 0;
+}
